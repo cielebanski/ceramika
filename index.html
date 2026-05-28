@@ -226,19 +226,25 @@ function openLightbox(src, name) {
 photos.forEach((photo, i) => {
   const fig = document.createElement('figure');
   fig.className = 'photo';
-
+ 
   const img = document.createElement('img');
   img.src = photo.src;
   img.alt = photo.name;
-  img.loading = 'lazy';
-
+ 
+  if (i < EAGER_COUNT) {
+    img.loading = 'eager';
+    img.fetchPriority = 'high';
+  } else {
+    img.loading = 'lazy';
+  }
+ 
   const cap = document.createElement('figcaption');
   cap.textContent = photo.name;
-
+ 
   fig.appendChild(img);
   fig.appendChild(cap);
   fig.addEventListener('click', () => openLightbox(photo.src, photo.name));
-
+ 
   (i % 2 === 0 ? colLeft : colRight).appendChild(fig);
 });
 
